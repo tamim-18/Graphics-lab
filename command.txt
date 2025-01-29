@@ -1,0 +1,2 @@
+g++ Task1_DDA.cpp -o Lines -lGL -lGLU -lglut
+./lines
