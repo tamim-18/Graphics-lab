@@ -9,10 +9,10 @@ using namespace std;
 
 // Tank structure
 struct Tank {
-    float x, y;
-    float angle;
-    float speed;
-    bool alive;
+    float x, y;  // attributes
+    float angle;  // angle of rotation
+    float speed;  // speed of tank
+    bool alive;  // alive or not
     float r, g, b; // Color
 };
 
@@ -34,27 +34,27 @@ vector<Bullet> bullets1, bullets2;
 void drawTank(Tank tank) {
     if (!tank.alive) return;
 
-    glPushMatrix();
-    glTranslatef(tank.x, tank.y, 0);
-    glRotatef(tank.angle, 0, 0, 1);
+    glPushMatrix(); // Save the current matrix
+    glTranslatef(tank.x, tank.y, 0); // Translate to the tank position
+    glRotatef(tank.angle, 0, 0, 1); // Rotate the tank
 
     // Tank body
-    glColor3f(tank.r, tank.g, tank.b);
-    glBegin(GL_POLYGON);
-    glVertex2f(-5, -5);
-    glVertex2f(5, -5);
-    glVertex2f(5, 5);
-    glVertex2f(-5, 5);
+    glColor3f(tank.r, tank.g, tank.b); // Set the color
+    glBegin(GL_POLYGON);  // Draw the tank body
+    glVertex2f(-5, -5);  // Bottom left
+    glVertex2f(5, -5); // Bottom right
+    glVertex2f(5, 5);  // Top right
+    glVertex2f(-5, 5); // Top left
     glEnd();
 
     // Tank turret
-    glColor3f(1.0, 1.0, 1.0);
-    glBegin(GL_LINES);
-    glVertex2f(0, 0);
-    glVertex2f(0, 7);
+    glColor3f(1.0, 1.0, 1.0);  // Set the color
+    glBegin(GL_LINES);  // Draw the tank turret
+    glVertex2f(0, 0); // Turret base
+    glVertex2f(0, 7); // Turret top
     glEnd();
 
-    glPopMatrix();
+    glPopMatrix(); // Restore the saved matrix
 }
 
 // Function to draw bullets
@@ -86,7 +86,8 @@ void renderText(float x, float y, void* font, const char* text) {
 // Function to detect collision
 bool detectCollision(Tank& tank, Bullet& bullet) {
     return bullet.x > tank.x - 5 && bullet.x < tank.x + 5 &&
-           bullet.y > tank.y - 5 && bullet.y < tank.y + 5;
+           bullet.y > tank.y - 5 && bullet.y < tank.y + 5;  
+           // Check if bullet is within the tank's bounding box.. How this works?
 }
 
 // Display function
@@ -118,9 +119,9 @@ void updateBullets(vector<Bullet>& bullets, Tank& enemy) {
 
             if (bullets[i].x > 50 || bullets[i].x < -50 || bullets[i].y > 50 || bullets[i].y < -50) {
                 bullets[i].active = false;
-            }
+            }   // Check if bullet is out of bounds  
 
-            if (detectCollision(enemy, bullets[i])) {
+            if (detectCollision(enemy, bullets[i])) {  // Check if bullet hits the enemy
                 enemy.alive = false;
                 bullets[i].active = false;
             }
@@ -130,11 +131,11 @@ void updateBullets(vector<Bullet>& bullets, Tank& enemy) {
 
 // Timer function
 void timer(int) {
-    updateBullets(bullets1, tank2);
-    updateBullets(bullets2, tank1);
-    glutPostRedisplay();
-    glutTimerFunc(16, timer, 0);
-}
+    updateBullets(bullets1, tank2);  // Update the bullets for tank 1
+    updateBullets(bullets2, tank1);  // Update the bullets for tank 2
+    glutPostRedisplay();  // Redisplay the scene
+    glutTimerFunc(16, timer, 0);  // Update the bullets every 16ms
+}   // Update the bullets every 16ms  
 
 // Keyboard controls for movement and shooting
 void keyboard(unsigned char key, int x, int y) {
@@ -206,3 +207,14 @@ int main(int argc, char** argv) {
     glutMainLoop();
     return 0;
 }
+
+
+/*
+🎯 Final Step-by-Step Summary
+1️⃣ Loop through all bullets in the vector.
+2️⃣ Check if the bullet is active (skip if not).
+3️⃣ Move the bullet forward using cos(angle) and sin(angle).
+4️⃣ Check if the bullet is out of bounds (deactivate if yes).
+5️⃣ Check if the bullet hits the enemy tank (destroy if yes).
+6️⃣ Repeat for all bullets and update in real-time with timer().
+*/
