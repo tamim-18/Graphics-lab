@@ -1,5 +1,4 @@
 #include <GL/gl.h>
-#include<windows.h>
 #include <GL/glut.h>
 #include<bits/stdc++.h>
 #define ld long double

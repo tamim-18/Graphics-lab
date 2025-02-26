@@ -1,6 +1,5 @@
 ///2018331085
 
-#include<windows.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
